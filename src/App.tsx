@@ -8,15 +8,15 @@ import {
 } from "@/components/todos"
 import { UserDetail } from "@/components/user-detail"
 import { UserDirectory } from "@/components/user-directory"
-import { CheckCircle2, ClipboardList, Users } from "lucide-react"
+import { ClipboardList, Users } from "lucide-react"
 import { useState } from "react"
 import { Link, NavLink, Route, Routes } from "react-router-dom"
 
 export function App() {
   const [todos, setTodos] = useState<Todo[]>([
-    { id: 1, text: "Review project brief", completed: true },
-    { id: 2, text: "Shape the first release", completed: false },
-    { id: 3, text: "Share the progress", completed: false },
+    { id: 1, text: "Going to the market", completed: true },
+    { id: 2, text: "Having dinner with family", completed: false },
+    { id: 3, text: "Finish the assignment before time", completed: false },
   ])
 
   function addTodo(text: string) {
@@ -31,9 +31,9 @@ export function App() {
       <header className="topbar">
         <Link className="brand" to="/todos">
           <span className="brand-mark">
-            <CheckCircle2 />
+            <img alt="Marker logo" src="/marker.svg" />
           </span>
-          <span>Daymark</span>
+          <span>Marker</span>
         </Link>
         <nav className="main-nav">
           <NavLink

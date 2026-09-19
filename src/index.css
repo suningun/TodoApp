@@ -135,8 +135,9 @@
   button, a { -webkit-tap-highlight-color: transparent; }
   .app-shell { min-height: 100svh; }
   .topbar { align-items: center; border-bottom: 1px solid var(--line); display: flex; gap: 3rem; margin: 0 auto; max-width: 1180px; padding: 1.4rem 2rem; }
-  .brand { align-items: center; color: var(--ink); display: flex; font-size: 1.15rem; font-weight: 750; gap: .65rem; letter-spacing: -.03em; text-decoration: none; }
-  .brand-mark { align-items: center; background: var(--green); border-radius: 9px; color: white; display: flex; height: 2rem; justify-content: center; width: 2rem; }
+  .brand { align-items: center; color: var(--ink); display: flex; font-size: 1.15rem; font-weight: 750; gap: .01rem; letter-spacing: -.03em; text-decoration: none; }
+  .brand-mark { align-items: center; border-radius: 9px; color: white; display: flex; height: 2rem; justify-content: center; width: 2rem; }
+  .brand-mark img { height: 1.35rem; width: 1.35rem; }
   .brand-mark svg { height: 1.2rem; width: 1.2rem; }
   .main-nav { display: flex; gap: .3rem; }
   .nav-link { align-items: center; color: var(--muted-ink); display: flex; font-size: .9rem; gap: .45rem; padding: .55rem .8rem; text-decoration: none; }
@@ -153,6 +154,8 @@
   .lede { color: var(--muted-ink); font-size: 1.05rem; line-height: 1.55; }
   .count-label { color: var(--green); font-size: .78rem; font-weight: 700; padding-top: .4rem; }
   .add-todo { display: flex; gap: .65rem; margin-bottom: 1.3rem; }
+  .add-button { background: var(--green); color: white; height: 2.75rem; width: 2.75rem; }
+  .add-button:hover { background: color-mix(in oklch, var(--green), black 12%); }
   .text-input { background: white; border: 1px solid var(--line); border-radius: 7px; color: var(--ink); flex: 1; min-width: 0; outline: none; padding: .78rem 1rem; }
   .text-input:focus { border-color: var(--green); box-shadow: 0 0 0 3px #d9eee2; }
   .todo-list { list-style: none; margin: 0; padding: 0; }
