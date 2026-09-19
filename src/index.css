@@ -153,10 +153,10 @@
   h1 { font-size: clamp(2.2rem, 5vw, 4.2rem); letter-spacing: -.065em; line-height: .98; margin-bottom: 1rem; max-width: 650px; }
   .lede { color: var(--muted-ink); font-size: 1.05rem; line-height: 1.55; }
   .count-label { color: var(--green); font-size: .78rem; font-weight: 700; padding-top: .4rem; }
-  .add-todo { display: flex; gap: .65rem; margin-bottom: 1.3rem; }
-  .add-button { background: var(--green); color: white; height: 2.75rem; width: 2.75rem; }
+  .add-todo { align-items: center; display: flex; gap: .65rem; margin-bottom: 1.3rem; }
+  .add-button { background: var(--green); color: white; flex: 0 0 2.75rem; height: 2.75rem; padding: 0; width: 2.75rem; }
   .add-button:hover { background: color-mix(in oklch, var(--green), black 12%); }
-  .text-input { background: white; border: 1px solid var(--line); border-radius: 7px; color: var(--ink); flex: 1; min-width: 0; outline: none; padding: .78rem 1rem; }
+  .text-input { background: white; border: 1px solid var(--line); border-radius: 7px; color: var(--ink); flex: 1; height: 2.75rem; min-width: 0; outline: none; padding: 0 1rem; }
   .text-input:focus { border-color: var(--green); box-shadow: 0 0 0 3px #d9eee2; }
   .todo-list { list-style: none; margin: 0; padding: 0; }
   .todo-item { align-items: center; border-bottom: 1px solid var(--line); display: flex; gap: .8rem; padding: 1rem .2rem; }
