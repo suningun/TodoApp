@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button"
+import { useFetch } from "@/hooks/use-fetch"
 import { ArrowUpRight, RefreshCw } from "lucide-react"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { Link } from "react-router-dom"
 
 export type User = {
@@ -15,31 +16,21 @@ export type User = {
 type DirectoryState = "loading" | "error" | "empty" | "success"
 
 export function UserDirectory() {
-    const [users, setUsers] = useState<User[]>([])
-    const [state, setState] = useState<DirectoryState>("loading")
     const [retry, setRetry] = useState(0)
-
-    useEffect(() => {
-        let cancelled = false
-
-    fetch("https://jsonplaceholder.typicode.com/users")
-        .then((response) => {
-            if (!response.ok) throw new Error("Unable to load the directory")
-            return response.json() as Promise<User[]>
-        })
-        .then((nextUsers) => {
-            if (cancelled) return
-            setUsers(nextUsers)
-            setState(nextUsers.length === 0 ? "empty" : "success")
-        })
-        .catch(() => {
-            if (!cancelled) setState("error")
-        })
-
-        return () => {
-        cancelled = true
-        }
-    }, [retry])
+    const {
+        data: users,
+        loading,
+        error,
+    } = useFetch<User[]>(
+        `https://jsonplaceholder.typicode.com/users?retry=${retry}`
+    )
+    const state: DirectoryState = loading
+        ? "loading"
+        : error
+        ? "error"
+        : users && users.length === 0
+            ? "empty"
+            : "success"
 
     return (
         <section className="page-section directory-page">
@@ -50,7 +41,7 @@ export function UserDirectory() {
             <p className="lede">A live directory sourced from JSONPlaceholder.</p>
             </div>
             <span className="count-label">
-            {state === "success" ? `${users.length} members` : "Live data"}
+            {state === "success" ? `${users?.length ?? 0} members` : "Live data"}
             </span>
         </div>
 
@@ -60,12 +51,7 @@ export function UserDirectory() {
             <p className="state-icon">!</p>
             <h2>We couldn&apos;t reach the directory.</h2>
             <p>Check your connection and try again.</p>
-            <Button
-                onClick={() => {
-                setState("loading")
-                setRetry((value) => value + 1)
-                }}
-            >
+            <Button onClick={() => setRetry((value) => value + 1)}>
                 <RefreshCw /> Try again
             </Button>
             </div>
@@ -76,7 +62,7 @@ export function UserDirectory() {
             <p>The directory is currently empty.</p>
             </div>
         )}
-        {state === "success" && (
+        {state === "success" && users && (
             <div className="user-grid">
             {users.map((user) => (
                 <Link className="user-card" key={user.id} to={`/users/${user.id}`}>
