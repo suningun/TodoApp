@@ -1,4 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
+import { useLocalStorage } from "@/hooks/use-local-storage"
 import * as React from "react"
 
 type Theme = "dark" | "light" | "system"
@@ -84,21 +85,17 @@ export function ThemeProvider({
   disableTransitionOnChange = true,
   ...props
 }: ThemeProviderProps) {
-  const [theme, setThemeState] = React.useState<Theme>(() => {
-    const storedTheme = localStorage.getItem(storageKey)
-    if (isTheme(storedTheme)) {
-      return storedTheme
-    }
-
-    return defaultTheme
-  })
+  const [storedTheme, setThemeState] = useLocalStorage<Theme>(
+    storageKey,
+    defaultTheme
+  )
+  const theme = isTheme(storedTheme) ? storedTheme : defaultTheme
 
   const setTheme = React.useCallback(
     (nextTheme: Theme) => {
-      localStorage.setItem(storageKey, nextTheme)
       setThemeState(nextTheme)
     },
-    [storageKey]
+    [setThemeState]
   )
 
   const applyTheme = React.useCallback(
@@ -167,7 +164,6 @@ export function ThemeProvider({
                 ? "light"
                 : "dark"
 
-        localStorage.setItem(storageKey, nextTheme)
         return nextTheme
       })
     }
@@ -177,7 +173,7 @@ export function ThemeProvider({
     return () => {
       window.removeEventListener("keydown", handleKeyDown)
     }
-  }, [storageKey])
+  }, [setThemeState, storageKey])
 
   React.useEffect(() => {
     const handleStorageChange = (event: StorageEvent) => {
@@ -189,8 +185,15 @@ export function ThemeProvider({
         return
       }
 
-      if (isTheme(event.newValue)) {
-        setThemeState(event.newValue)
+      let nextTheme: string | null = event.newValue
+      try {
+        nextTheme = event.newValue === null ? null : JSON.parse(event.newValue)
+      } catch {
+        // Support storage values written by older versions of the app.
+      }
+
+      if (isTheme(nextTheme)) {
+        setThemeState(nextTheme)
         return
       }
 
@@ -202,7 +205,7 @@ export function ThemeProvider({
     return () => {
       window.removeEventListener("storage", handleStorageChange)
     }
-  }, [defaultTheme, storageKey])
+  }, [defaultTheme, setThemeState, storageKey])
 
   const value = React.useMemo(
     () => ({

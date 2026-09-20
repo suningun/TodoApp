@@ -14,13 +14,18 @@ type AddTodoProps = {
 
 export function AddTodo({ onAdd }: AddTodoProps) {
     const [text, setText] = useState("")
+    const [error, setError] = useState("")
 
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault()
         const nextText = text.trim()
-        if (!nextText) return
+        if (!nextText) {
+        setError("Enter a todo before adding it.")
+        return
+        }
         onAdd(nextText)
         setText("")
+        setError("")
     }
 
     return (
@@ -40,6 +45,11 @@ export function AddTodo({ onAdd }: AddTodoProps) {
         >
             <Plus />
         </Button>
+        {error && (
+            <p className="form-error" role="alert">
+            {error}
+            </p>
+        )}
         </form>
     )
 }
@@ -98,7 +108,7 @@ export function FilterBar({
     completedCount,
     onFilterChange,
     onClearCompleted,
-    }: FilterBarProps) {
+}: FilterBarProps) {
     return (
         <div className="filter-bar">
         <div className="filter-tabs" role="group" aria-label="Filter todos">
