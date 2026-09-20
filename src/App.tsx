@@ -1,19 +1,29 @@
 import { LiveClock } from "@/components/live-clock"
+import { NavBar } from "@/components/nav-bar"
 import { useTheme } from "@/components/theme-provider"
-import {
-  AddTodo,
-  FilterBar,
-  TodoList,
-  type Filter,
-  type Todo,
-} from "@/components/todos"
-import { UserDetail } from "@/components/user-detail"
-import { UserDirectory } from "@/components/user-directory"
-import { ClipboardList, Moon, Sun, Users } from "lucide-react"
+import { type Todo } from "@/components/todos"
+import { AuthProvider } from "@/context/auth-context"
+import { CartProvider } from "@/context/cart-context"
+import { NotFoundPage } from "@/pages/not-found"
+import { ShopPage } from "@/pages/shop"
+import { TodoPage } from "@/pages/todos"
+import { UserDetailPage } from "@/pages/user-detail"
+import { UsersPage } from "@/pages/users"
+import { ClipboardList, Moon, ShoppingBag, Sun, Users } from "lucide-react"
 import { useState } from "react"
 import { Link, NavLink, Route, Routes } from "react-router-dom"
 
 export function App() {
+  return (
+    <AuthProvider>
+      <CartProvider>
+        <AppContent />
+      </CartProvider>
+    </AuthProvider>
+  )
+}
+
+function AppContent() {
   const { theme, setTheme } = useTheme()
   const [todos, setTodos] = useState<Todo[]>([
     { id: 1, text: "Going to the market", completed: true },
@@ -54,7 +64,16 @@ export function App() {
           >
             <Users /> Directory
           </NavLink>
+          <NavLink
+            className={({ isActive }) =>
+              isActive ? "nav-link is-active" : "nav-link"
+            }
+            to="/shop"
+          >
+            <ShoppingBag /> Shop
+          </NavLink>
         </nav>
+        <NavBar />
         <LiveClock />
         <button
           aria-label={
@@ -100,72 +119,12 @@ export function App() {
             }
             path="/todos"
           />
-          <Route element={<UserDirectory />} path="/users" />
-          <Route element={<UserDetail />} path="/users/:id" />
-          <Route element={<NotFound />} path="*" />
+          <Route element={<UsersPage />} path="/users" />
+          <Route element={<UserDetailPage />} path="/users/:id" />
+          <Route element={<ShopPage />} path="/shop" />
+          <Route element={<NotFoundPage />} path="*" />
         </Routes>
       </main>
-    </div>
-  )
-}
-
-type TodoPageProps = {
-  todos: Todo[]
-  onAdd: (text: string) => void
-  onToggle: (id: number) => void
-  onDelete: (id: number) => void
-  onClearCompleted: () => void
-}
-
-function TodoPage({
-  todos,
-  onAdd,
-  onToggle,
-  onDelete,
-  onClearCompleted,
-}: TodoPageProps) {
-  const [filter, setFilter] = useState<Filter>("all")
-  const visibleTodos = todos.filter(
-    (todo) =>
-      filter === "all" ||
-      (filter === "completed" ? todo.completed : !todo.completed)
-  )
-
-  return (
-    <section className="page-section todo-page">
-      <div className="section-heading">
-        <div>
-          <p className="eyebrow">Personal workspace</p>
-          <h1>Make room for what matters.</h1>
-          <p className="lede">
-            A focused list for the work worth carrying forward.
-          </p>
-        </div>
-        <span className="count-label">
-          {todos.filter((todo) => !todo.completed).length} open
-        </span>
-      </div>
-      <AddTodo onAdd={onAdd} />
-      <TodoList todos={visibleTodos} onDelete={onDelete} onToggle={onToggle} />
-      <FilterBar
-        completedCount={todos.filter((todo) => todo.completed).length}
-        filter={filter}
-        onClearCompleted={onClearCompleted}
-        onFilterChange={setFilter}
-      />
-    </section>
-  )
-}
-
-function NotFound() {
-  return (
-    <div className="state-panel page-section">
-      <p className="eyebrow">404</p>
-      <h1>That view drifted away.</h1>
-      <p>There&apos;s nothing at this address.</p>
-      <Link className="back-link" to="/todos">
-        Return to todos
-      </Link>
     </div>
   )
 }
