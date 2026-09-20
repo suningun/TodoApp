@@ -1,4 +1,5 @@
 import { LiveClock } from "@/components/live-clock"
+import { useTheme } from "@/components/theme-provider"
 import {
   AddTodo,
   FilterBar,
@@ -8,11 +9,12 @@ import {
 } from "@/components/todos"
 import { UserDetail } from "@/components/user-detail"
 import { UserDirectory } from "@/components/user-directory"
-import { ClipboardList, Users } from "lucide-react"
+import { ClipboardList, Moon, Sun, Users } from "lucide-react"
 import { useState } from "react"
 import { Link, NavLink, Route, Routes } from "react-router-dom"
 
 export function App() {
+  const { theme, setTheme } = useTheme()
   const [todos, setTodos] = useState<Todo[]>([
     { id: 1, text: "Going to the market", completed: true },
     { id: 2, text: "Having dinner with family", completed: false },
@@ -54,6 +56,19 @@ export function App() {
           </NavLink>
         </nav>
         <LiveClock />
+        <button
+          aria-label={
+            theme === "dark" ? "Switch to light theme" : "Switch to dark theme"
+          }
+          className="theme-toggle"
+          onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+          title={
+            theme === "dark" ? "Switch to light theme" : "Switch to dark theme"
+          }
+          type="button"
+        >
+          {theme === "dark" ? <Sun /> : <Moon />}
+        </button>
       </header>
       <main className="main-content">
         <Routes>
@@ -62,15 +77,21 @@ export function App() {
               <TodoPage
                 onAdd={addTodo}
                 onClearCompleted={() =>
-                  setTodos((current) => current.filter((todo) => !todo.completed))
+                  setTodos((current) =>
+                    current.filter((todo) => !todo.completed)
+                  )
                 }
                 onDelete={(id) =>
-                  setTodos((current) => current.filter((todo) => todo.id !== id))
+                  setTodos((current) =>
+                    current.filter((todo) => todo.id !== id)
+                  )
                 }
                 onToggle={(id) =>
                   setTodos((current) =>
                     current.map((todo) =>
-                      todo.id === id ? { ...todo, completed: !todo.completed } : todo
+                      todo.id === id
+                        ? { ...todo, completed: !todo.completed }
+                        : todo
                     )
                   )
                 }
@@ -96,7 +117,13 @@ type TodoPageProps = {
   onClearCompleted: () => void
 }
 
-function TodoPage({ todos, onAdd, onToggle, onDelete, onClearCompleted }: TodoPageProps) {
+function TodoPage({
+  todos,
+  onAdd,
+  onToggle,
+  onDelete,
+  onClearCompleted,
+}: TodoPageProps) {
   const [filter, setFilter] = useState<Filter>("all")
   const visibleTodos = todos.filter(
     (todo) =>
@@ -119,11 +146,7 @@ function TodoPage({ todos, onAdd, onToggle, onDelete, onClearCompleted }: TodoPa
         </span>
       </div>
       <AddTodo onAdd={onAdd} />
-      <TodoList
-        todos={visibleTodos}
-        onDelete={onDelete}
-        onToggle={onToggle}
-      />
+      <TodoList todos={visibleTodos} onDelete={onDelete} onToggle={onToggle} />
       <FilterBar
         completedCount={todos.filter((todo) => todo.completed).length}
         filter={filter}

@@ -130,7 +130,9 @@
 }
 
   :root { --ink: #18201d; --muted-ink: #68736f; --line: #dce5df; --paper: #f6f8f4; --mint: #d9eee2; --green: #236b4d; --orange: #e87543; }
+  .dark { --ink: #edf5ef; --muted-ink: #a5b5aa; --line: #34443b; --paper: #101814; --mint: #1d3b2c; --green: #8bd0a7; --orange: #f49a6f; }
   body { min-width: 320px; background: radial-gradient(circle at 12% 0%, #e6f3e9 0, transparent 30%), var(--paper); color: var(--ink); }
+  .dark body { background: radial-gradient(circle at 12% 0%, #1b3327 0, transparent 30%), var(--paper); }
   button, input { font: inherit; }
   button, a { -webkit-tap-highlight-color: transparent; }
   .app-shell { min-height: 100svh; }
@@ -145,6 +147,9 @@
   .nav-link.is-active { background: var(--mint); border-radius: 6px; color: var(--green); font-weight: 650; }
   .live-clock { align-items: center; color: var(--muted-ink); display: flex; font-variant-numeric: tabular-nums; font-size: .8rem; gap: .5rem; margin-left: auto; }
   .live-dot { background: var(--orange); border-radius: 99px; height: .45rem; width: .45rem; }
+  .theme-toggle { align-items: center; background: transparent; border: 1px solid var(--line); border-radius: 7px; color: var(--muted-ink); cursor: pointer; display: flex; height: 2.25rem; justify-content: center; padding: 0; width: 2.25rem; }
+  .theme-toggle:hover { background: var(--mint); color: var(--green); }
+  .theme-toggle svg { height: 1rem; width: 1rem; }
   .main-content { margin: 0 auto; max-width: 900px; padding: 5rem 2rem; }
   .page-section { animation: rise .45s ease both; }
   .section-heading { align-items: flex-start; display: flex; justify-content: space-between; margin-bottom: 2.5rem; }
@@ -157,6 +162,7 @@
   .add-button { background: var(--green); color: white; flex: 0 0 2.75rem; height: 2.75rem; padding: 0; width: 2.75rem; }
   .add-button:hover { background: color-mix(in oklch, var(--green), black 12%); }
   .text-input { background: white; border: 1px solid var(--line); border-radius: 7px; color: var(--ink); flex: 1; height: 2.75rem; min-width: 0; outline: none; padding: 0 1rem; }
+  .dark .text-input, .dark .user-card { background: #19251f; }
   .text-input:focus { border-color: var(--green); box-shadow: 0 0 0 3px #d9eee2; }
   .todo-list { list-style: none; margin: 0; padding: 0; }
   .todo-item { align-items: center; border-bottom: 1px solid var(--line); display: flex; gap: .8rem; padding: 1rem .2rem; }
